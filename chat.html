@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183e35">
+  <title>Ask us · Klaidorbot</title>
+  <link rel="stylesheet" href="/public-chat.css">
+  <script type="module" src="/public-chat.js"></script>
+</head>
+<body>
+  <main class="chat-shell">
+    <header class="chat-header">
+      <span class="bot-mark" aria-hidden="true">✦</span>
+      <div><p class="eyebrow">KLAIDORBOT ASSISTANT</p><h1 id="chat-title">Ask us anything</h1></div>
+      <span class="online">FAQ answers</span>
+    </header>
+    <p class="intro">Ask a question and I’ll look for an answer in our FAQs.</p>
+    <section id="conversation" class="conversation" role="log" aria-live="polite" aria-relevant="additions">
+      <p class="message assistant">Hi! What would you like to know?</p>
+    </section>
+    <form id="question-form" class="question-form">
+      <label for="question">Your question</label>
+      <div class="input-row">
+        <input id="question" name="question" maxlength="500" autocomplete="off" placeholder="Type your question…" required>
+        <button id="send" type="submit">Ask</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+    <footer>Answers are based on the business’s FAQ workspace.</footer>
+  </main>
+</body>
+</html>

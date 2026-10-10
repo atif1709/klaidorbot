@@ -75,7 +75,7 @@
     <h2 id="account-title">Create your account</h2>
     <p id="account-description"></p>
     <form id="account-form" method="post">
-      <div class="field"><label for="account-username">Username</label><input id="account-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" pattern="[A-Za-z0-9_-]{3,32}" minlength="3" maxlength="32" required></div>
+      <div class="field"><label for="account-username">Username</label><input id="account-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" pattern="[A-Za-z0-9._\-]{3,32}" minlength="3" maxlength="32" required></div>
       <div class="field" id="recovery-field" hidden><label for="recovery-code">Recovery code</label><input id="recovery-code" name="recoveryCode" type="text" autocomplete="off" spellcheck="false" maxlength="64"></div>
       <div class="field"><label for="account-password">Password (12–128 characters)</label><input id="account-password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></div>
       <button class="submit" id="account-submit" type="submit">Create account</button>

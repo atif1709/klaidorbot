@@ -59,7 +59,7 @@ function openAccount(nextMode) {
   root.querySelector('#account-title').textContent = reset ? 'Reset your password' : 'Create your account';
   root.querySelector('#account-description').textContent = reset
     ? 'Enter your username and the recovery code you saved when you created your account.'
-    : 'Choose a username with 3–32 letters, numbers, underscores or hyphens.';
+    : 'Choose a username with 3–32 letters, numbers, periods, underscores or hyphens.';
   root.querySelector('#recovery-field').hidden = !reset;
   root.querySelector('#recovery-code').required = reset;
   accountButton.textContent = reset ? 'Reset password' : 'Create account';

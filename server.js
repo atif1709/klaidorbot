@@ -5,6 +5,7 @@ import { promisify } from 'node:util';
 import { mkdirSync, chmodSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { UsernameBloomFilter } from './username-bloom.js';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const derive = promisify(scrypt);
@@ -44,8 +45,8 @@ function textField(value, name, min, max) {
 
 function usernameField(value) {
   const username = textField(value, 'Username', 3, 32).toLowerCase();
-  if (!/^[a-z0-9_-]+$/.test(username)) {
-    throw new HttpError(400, 'Use letters, numbers, underscores or hyphens for your username.');
+  if (!/^[a-z0-9._-]+$/.test(username)) {
+    throw new HttpError(400, 'Use letters, numbers, periods, underscores or hyphens for your username.');
   }
   return username;
 }
@@ -85,6 +86,7 @@ export async function createApp({
   appOrigin = process.env.APP_ORIGIN || '',
   embedAncestors = process.env.EMBED_ANCESTORS || 'https://sites.google.com https://*.googleusercontent.com',
   authLimit = 30,
+  publicChatLimit = 60,
   now = Date.now,
 } = {}) {
   if (appOrigin) appOrigin = new URL(appOrigin).origin;
@@ -113,11 +115,18 @@ export async function createApp({
   if (!db.prepare('PRAGMA table_info(sessions)').all().some(column => column.name === 'kind')) {
     db.exec("ALTER TABLE sessions ADD COLUMN kind TEXT NOT NULL DEFAULT 'cookie'");
   }
+  const usernameBloom = new UsernameBloomFilter();
+  for (const { username } of db.prepare('SELECT username FROM users').iterate()) {
+    usernameBloom.add(username);
+  }
   const dummy = await passwordHash(randomToken());
   const attempts = new Map();
+  const publicChatAttempts = new Map();
   const cleanup = setInterval(() => {
     db.prepare('DELETE FROM sessions WHERE expires_at <= ?').run(now());
-    for (const [key, value] of attempts) if (value.until <= now()) attempts.delete(key);
+    for (const limits of [attempts, publicChatAttempts]) {
+      for (const [key, value] of limits) if (value.until <= now()) limits.delete(key);
+    }
   }, 60000).unref();
 
   const json = (res, status, body) => {
@@ -140,17 +149,17 @@ export async function createApp({
     res.setHeader('Set-Cookie', cookie(token, remember ? duration / 1000 : undefined));
     return {};
   };
-  function rateLimit(req, res) {
+  function rateLimit(req, res, limits = attempts, limit = authLimit, message = 'Too many account attempts. Please try again in 15 minutes.') {
     const key = req.socket.remoteAddress;
-    let entry = attempts.get(key);
+    let entry = limits.get(key);
     if (!entry || entry.until <= now()) {
-      if (!entry && attempts.size >= 10000) throw new HttpError(429, 'Please try again later.');
+      if (!entry && limits.size >= 10000) throw new HttpError(429, 'Please try again later.');
       entry = { count: 0, until: now() + 15 * 60000 };
-      attempts.set(key, entry);
+      limits.set(key, entry);
     }
-    if (++entry.count > authLimit) {
+    if (++entry.count > limit) {
       res.setHeader('Retry-After', Math.ceil((entry.until - now()) / 1000));
-      throw new HttpError(429, 'Too many account attempts. Please try again in 15 minutes.');
+      throw new HttpError(429, message);
     }
   }
 
@@ -160,6 +169,8 @@ export async function createApp({
     ['/login.js', ['login.js', 'text/javascript']], ['/api.js', ['api.js', 'text/javascript']],
     ['/workspace', ['workspace.html', 'text/html']], ['/workspace.js', ['workspace.js', 'text/javascript']],
     ['/workspace.css', ['workspace.css', 'text/css']],
+    ['/public-chat.js', ['public-chat.js', 'text/javascript']],
+    ['/public-chat.css', ['public-chat.css', 'text/css']],
   ]);
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store');
@@ -172,16 +183,17 @@ export async function createApp({
       const method = req.method;
       if (path === '/api/health' && method === 'GET') return json(res, 200, { ok: true });
       if (!path.startsWith('/api/')) {
-        const asset = assets.get(path);
+        const publicChat = /^\/chat\/[a-z0-9._-]{3,32}$/i.test(path);
+        const asset = publicChat ? ['chat.html', 'text/html'] : assets.get(path);
         if (!asset || !['GET', 'HEAD'].includes(method)) throw new HttpError(404, 'Page not found.');
         if (path === '/workspace' && !getUser(req)) { res.writeHead(302, { Location: '/' }); return res.end(); }
         const body = readFileSync(resolve(root, asset[0]));
-        if (path === '/embed') {
+        if (path === '/embed' || publicChat) {
           const script = body.toString().match(/<script type="module">([\s\S]*?)<\/script>/)?.[1];
-          if (!script) throw new Error('Missing embed bundle; run npm run build.');
-          const hash = createHash('sha256').update(script).digest('base64');
+          if (path === '/embed' && !script) throw new Error('Missing embed bundle; run npm run build.');
           res.removeHeader('X-Frame-Options');
-          res.setHeader('Content-Security-Policy', `default-src 'self'; script-src 'sha256-${hash}'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self' ${ancestors.join(' ')}; base-uri 'none'; form-action 'self'`);
+          const scriptPolicy = script ? ` 'sha256-${createHash('sha256').update(script).digest('base64')}'` : '';
+          res.setHeader('Content-Security-Policy', `default-src 'self'; script-src 'self'${scriptPolicy}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self' ${ancestors.join(' ')}; base-uri 'none'; form-action 'self'`);
         }
         res.writeHead(200, { 'Content-Type': `${asset[1]}; charset=utf-8` });
         return res.end(method === 'HEAD' ? undefined : body);
@@ -196,13 +208,31 @@ export async function createApp({
           if (!matches) throw new HttpError(403, 'Invalid request origin.');
         }
       }
+      const publicChatMatch = /^\/api\/public\/chat\/([a-z0-9._-]{3,32})$/i.exec(path);
+      if (publicChatMatch) {
+        if (method !== 'POST') throw new HttpError(405, 'Method not allowed.');
+        rateLimit(req, res, publicChatAttempts, publicChatLimit, 'Too many chatbot questions. Please try again later.');
+        const username = publicChatMatch[1].toLowerCase();
+        const body = await readJson(req);
+        const question = textField(body.question, 'Question', 1, 500);
+        const owner = db.prepare('SELECT id FROM users WHERE username = ?').get(username);
+        if (!owner) throw new HttpError(404, 'This chatbot is unavailable.');
+        const faqs = db.prepare('SELECT id, question, answer FROM faqs WHERE user_id = ? ORDER BY id DESC').all(owner.id);
+        const faq = answerFromFaqs(question, faqs);
+        return json(res, 200, {
+          answer: faq?.answer || 'I couldn’t find a clear answer in these FAQs. Please contact the business for help.',
+          source: faq ? { question: faq.question } : null,
+        });
+      }
       if (['/api/register', '/api/login', '/api/reset-password'].includes(path) && method === 'POST') {
         rateLimit(req, res);
         const body = await readJson(req);
         const username = usernameField(body.username);
         const password = passwordField(body.password, path !== '/api/login');
         if (body.remember !== undefined && typeof body.remember !== 'boolean') throw new HttpError(400, 'Remember me must be a boolean.');
-        const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+        const user = path === '/api/register'
+          ? (usernameBloom.mightContain(username) ? db.prepare('SELECT * FROM users WHERE username = ?').get(username) : undefined)
+          : db.prepare('SELECT * FROM users WHERE username = ?').get(username);
         if (path === '/api/register') {
           const { salt, hash } = await passwordHash(password);
           if (user) throw new HttpError(409, 'That username is unavailable.');
@@ -213,6 +243,7 @@ export async function createApp({
             if (error.errcode === 2067) throw new HttpError(409, 'That username is unavailable.');
             throw error;
           }
+          usernameBloom.add(username);
           const session = newSession(req, res, Number(result.lastInsertRowid), body.remember === true);
           return json(res, 201, { user: { id: Number(result.lastInsertRowid), username }, recoveryCode, ...session });
         }

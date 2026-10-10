@@ -15,6 +15,9 @@ const chatForm = root.querySelector('#chat-form');
 const chatStatus = root.querySelector('#chat-status');
 const logoutButton = root.querySelector('#logout');
 const retryButton = root.querySelector('#retry-load');
+const publicChatLink = root.querySelector('#public-chat-link');
+const openPublicChat = root.querySelector('#open-public-chat');
+const publicEmbedCode = root.querySelector('#public-embed-code');
 let faqs = [];
 
 function showError(target, error) {
@@ -122,6 +125,10 @@ async function loadWorkspace() {
   try {
     const { user } = await api('/api/me');
     root.querySelector('#username').textContent = user.username;
+    const chatUrl = new URL(`/chat/${encodeURIComponent(user.username)}`, location.origin).href;
+    publicChatLink.value = chatUrl;
+    openPublicChat.href = chatUrl;
+    publicEmbedCode.value = `<iframe src="${chatUrl}" title="Ask ${user.username}" width="100%" height="640" style="border:0" loading="lazy"></iframe>`;
     ({ faqs } = await api('/api/faqs'));
     ready = true;
     renderFaqs();

@@ -15,6 +15,14 @@
     <p class="intro">A helpful conversation starts with a good answer. Add your FAQs, then try your assistant.</p>
     <p id="page-status" role="status">Loading your workspace…</p>
     <button id="retry-load" type="button" class="secondary" hidden>Retry loading</button>
+    <section class="card share-card" aria-labelledby="share-title">
+      <h2 id="share-title">Share your chatbot</h2>
+      <p class="hint">Anyone with this link can ask questions answered from all FAQs in this workspace. Only matched answers and their source questions are shown.</p>
+      <label for="public-chat-link">Public chat link</label>
+      <div class="share-link-row"><input id="public-chat-link" type="url" readonly><a id="open-public-chat" class="button-link" target="_blank" rel="noopener noreferrer">Open chatbot</a></div>
+      <label for="public-embed-code">Embed on another website</label>
+      <textarea id="public-embed-code" rows="3" readonly></textarea>
+    </section>
     <div class="columns">
       <section class="card" aria-labelledby="faq-title">
         <h2 id="faq-title">Your knowledge base</h2>
