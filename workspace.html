@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your FAQ workspace · Klaidorbot</title>
+  <link rel="stylesheet" href="/workspace.css">
+  <script type="module" src="/workspace.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/workspace">Klaidorbot.</a><div><span id="username"></span><button disabled id="logout" type="button" class="secondary">Log out</button></div></header>
+  <main>
+    <p class="eyebrow">YOUR KNOWLEDGE, CONNECTED</p>
+    <h1>Your FAQ workspace</h1>
+    <p class="intro">A helpful conversation starts with a good answer. Add your FAQs, then try your assistant.</p>
+    <p id="page-status" role="status">Loading your workspace…</p>
+    <button id="retry-load" type="button" class="secondary" hidden>Retry loading</button>
+    <div class="columns">
+      <section class="card" aria-labelledby="faq-title">
+        <h2 id="faq-title">Your knowledge base</h2>
+        <form id="faq-form">
+          <label for="question">Question</label><input disabled id="question" name="question" maxlength="500" placeholder="What are your opening hours?" required>
+          <label for="answer">Answer</label><textarea disabled id="answer" name="answer" maxlength="5000" rows="4" placeholder="Write the answer your assistant should give…" required></textarea>
+          <div class="actions"><button disabled id="save-faq" type="submit">Add FAQ</button><button id="cancel-edit" class="secondary" type="button" hidden>Cancel edit</button></div>
+          <p id="faq-status" role="status"></p>
+        </form>
+        <div id="faq-list" aria-label="Saved FAQs"></div>
+      </section>
+      <section class="card chat-card" aria-labelledby="chat-title">
+        <div class="chat-heading"><h2 id="chat-title">Try your assistant</h2><span>FAQ search</span></div>
+        <p class="hint">Answers come from your saved FAQs. If a question has no clear match, the assistant will say so.</p>
+        <div id="conversation" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation"><p class="bot-message">Hi! Add an FAQ, then ask me a question about it.</p></div>
+        <form id="chat-form"><label for="chat-question">Your question</label><input disabled id="chat-question" name="question" maxlength="500" placeholder="Ask about your FAQs…" required><button disabled id="send-question" type="submit">Send question →</button><p id="chat-status" role="status"></p></form>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
