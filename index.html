@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#183e35">
+  <meta name="description" content="Sign in to Klaidorbot, your workspace for helpful chatbots and instant FAQ answers.">
+  <title>Klaidorbot Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Instrument+Serif:ital@0;1&display=swap');
+    :root{--forest:#183e35;--mint:#c4edba;--ink:#23332d;--muted:#7b8179;--paper:#fafbf7;--line:#dfe4dc}
+    *{box-sizing:border-box}body{margin:0;font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink)}button,input{font:inherit}button,a,input{ -webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button{cursor:pointer}a{color:inherit}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #86bba2;outline-offset:4px}
+    .page{display:grid;grid-template-columns:1fr 1fr;min-height:100svh}.story{background:var(--forest);color:#f4f8ef;padding:42px 9% 27px;display:flex;flex-direction:column;position:relative;overflow:hidden}.brand{display:inline-flex;align-items:center;gap:11px;font-size:23px;font-weight:650;letter-spacing:-.8px;text-decoration:none;width:fit-content}.brand-mark{width:32px;height:32px;display:grid;place-items:center;background:var(--mint);color:var(--forest);border-radius:10px}.brand-mark svg{width:23px;height:23px}.brand-dot{color:var(--mint)}.story-content{width:100%;max-width:470px;margin:auto;padding:61px 0 40px}.eyebrow{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:1.8px;color:#c9decc}.eyebrow span{width:6px;height:6px;background:var(--mint);border-radius:50%}h1{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:65px;line-height:1.04;letter-spacing:-1.2px;margin:22px 0 23px}h1 em{font-weight:400;color:var(--mint)}.intro{font-size:14px;line-height:1.8;color:#c3d1c6;max-width:365px;margin:0}
+    .chat{margin-top:37px;border:1px solid #557266;border-radius:17px;background:#244a40;box-shadow:0 16px 35px #102e3026;overflow:hidden;transform:rotate(-2deg);transition:transform .25s}.chat:hover{transform:rotate(0)}.chat-head{display:flex;align-items:center;gap:10px;border-bottom:1px solid #55726666;padding:16px 19px}.bot-avatar{width:35px;height:35px;border-radius:11px;background:var(--mint);color:var(--forest);display:grid;place-items:center}.bot-avatar svg{width:21px;height:21px}.chat-title{font-size:12px;font-weight:600}.online{font-size:10px;color:#c0d0c4;margin-top:3px}.online::before{content:'';display:inline-block;width:5px;height:5px;background:var(--mint);border-radius:50%;margin-right:5px}.chat-live{margin-left:auto;font-size:9px;border:1px solid #6b8676;border-radius:5px;padding:4px 7px;color:#d0decf}.chat-body{padding:19px;display:flex;flex-direction:column;gap:13px;font-size:12px;line-height:1.65}.bubble{padding:11px 14px;border-radius:12px;max-width:90%}.question{background:#446357;margin-left:auto;border-bottom-right-radius:3px}.answer{background:#f1f6eb;color:#294b3d;border-bottom-left-radius:3px}.answer-source{font-size:9px;border-top:1px solid #d9e3d6;margin-top:9px;padding-top:8px;color:#6b7a66;display:flex;align-items:center;gap:5px}.sparkle{color:#bce5b1}.chat-options{display:flex;gap:6px;flex-wrap:wrap;padding:0 19px 17px}.chat-options button{border:1px solid #658172;background:transparent;border-radius:20px;padding:6px 10px;color:#d8e6d7;font-size:10px;transition:background .2s}.chat-options button:hover{background:#416354}.chat-footer{text-align:center;font-size:9px;color:#abc0ac;padding:10px;border-top:1px solid #55726666}.benefits{display:flex;gap:20px;margin:30px 0 0;color:#ccdacb;font-size:10px}.benefits span{display:flex;align-items:center;gap:6px}.benefits svg{width:13px;height:13px;color:var(--mint)}.story-bottom{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#9fb7a7;gap:12px}.story-bottom span:last-child{letter-spacing:1px;text-transform:uppercase;font-size:9px}
+    .login-side{padding:42px 8% 27px;display:flex;flex-direction:column}.top-link{text-align:right;font-size:12px;color:#7c8479}.top-link a{text-decoration:none;margin-left:6px;font-weight:600;color:var(--forest)}.top-link a:hover{text-decoration:underline}.form-wrap{width:100%;max-width:374px;margin:auto;padding:54px 0}.welcome-icon{width:45px;height:45px;border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;color:var(--forest);background:#f0f3ea;margin-bottom:24px}.welcome-icon svg{width:23px;height:23px}.form-wrap h2{font-size:31px;letter-spacing:-1.1px;font-weight:550;margin:0 0 10px}.subtitle{font-size:13px;line-height:1.7;color:var(--muted);margin:0 0 31px}.field{margin-bottom:20px}.field label{display:block;font-size:12px;font-weight:600;margin-bottom:9px}.input-wrap{position:relative}.input-wrap>svg{position:absolute;left:14px;top:15px;width:17px;height:17px;color:#939c8f}.field input{width:100%;height:48px;border:1px solid #dce2d6;border-radius:7px;background:#fff;padding:0 42px;font-size:12px;color:var(--ink);transition:border-color .2s}.field input::placeholder{color:#a2a79d}.field input:focus{border-color:#779b77;outline:2px solid #dcead5;outline-offset:0}.show-password{position:absolute;right:9px;top:9px;width:30px;height:30px;border:0;background:transparent;display:grid;place-items:center;color:#929b8c}.show-password svg{width:17px;height:17px}.form-options{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin:3px 0 25px}.remember{display:flex;gap:7px;align-items:center;color:#66705f}.remember input{margin:0;width:14px;height:14px;accent-color:var(--forest)}.text-button{border:0;background:none;padding:0;font-size:inherit;color:var(--forest);font-weight:600}.text-button:hover{text-decoration:underline}.submit{width:100%;height:48px;border:0;border-radius:7px;background:var(--forest);color:#fff;font-size:12px;font-weight:550;display:flex;align-items:center;justify-content:center;gap:14px;transition:background .2s,transform .2s}.submit:hover{background:#2b5748;transform:translateY(-1px)}.submit svg{width:16px;height:16px}.divider{display:flex;align-items:center;gap:14px;margin:27px 0;color:#a1a79a;font-size:10px}.divider::before,.divider::after{content:'';height:1px;background:var(--line);flex:1}.signup{text-align:center;font-size:12px;color:#7b8375}.signup a{font-size:12px;margin-left:4px}.trust{display:flex;justify-content:center;gap:6px;align-items:center;font-size:10px;color:#969e8e;margin-top:28px}.trust svg{width:12px;height:12px}.login-bottom{display:flex;justify-content:space-between;color:#9aa18f;font-size:10px;gap:15px}.legal{display:flex;gap:18px}.legal a{font-size:10px;font-weight:400;color:#8c9581}.status{font-size:12px;color:#365c41;line-height:1.6;background:#eef4e8;border-radius:7px;padding:12px;margin-top:15px}.status:empty{display:none}dialog{border:1px solid var(--line);border-radius:16px;padding:29px;max-width:440px;width:calc(100% - 40px);background:var(--paper);color:var(--ink);box-shadow:0 20px 70px #0003}dialog::backdrop{background:#102e32a6;backdrop-filter:blur(3px)}dialog h2{font-size:23px;margin:0 0 16px}dialog p{font-size:13px;color:#6d7668;line-height:1.8}dialog .submit{margin-top:22px}.mobile-brand{display:none}
+    .text-button{text-decoration:none}.login-brand{font-size:13px;font-weight:600;color:var(--forest);margin:0 0 8px}.social-links{display:flex;justify-content:center;gap:24px;margin:0 0 20px;font-size:11px;color:var(--forest)}.social-links a{text-decoration:none}.social-links a:hover{text-decoration:underline}
+    @media(min-width:1500px){.story{padding-left:13%;padding-right:13%}.login-side{padding-left:12%;padding-right:12%}h1{font-size:73px}}
+    @media(max-width:1000px){.story{padding-left:7%;padding-right:7%}h1{font-size:54px}.benefits{gap:10px;font-size:9px}.login-side{padding-left:9%;padding-right:9%}.story-bottom span:last-child{display:none}}
+    @media(max-width:700px){.page{grid-template-columns:1fr}.story{order:2;padding:35px 26px}.story>.brand{display:none}.story-content{padding:0 0 32px;max-width:420px}h1{font-size:48px;margin-top:18px}.intro{max-width:100%}.chat{margin-top:27px}.benefits{font-size:10px;gap:18px}.login-side{min-height:100svh;padding:26px 25px}.mobile-brand{display:inline-flex;font-size:20px;color:var(--forest)}.top-link{display:flex;align-items:center;justify-content:space-between}.top-link>span{font-size:11px}.form-wrap{padding:48px 0}.form-wrap h2{font-size:31px}.login-bottom{font-size:9px}.legal{gap:13px}.legal a{font-size:9px}.story-bottom span:last-child{display:block}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}.chat{transform:none}}
+  </style>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>
+    <symbol id="bot" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="13" rx="4"/><path d="M12 3v3M1.5 11v4M22.5 11v4M9 15h6"/><path d="M8 10v1M16 10v1" stroke-width="2.4"/></g></symbol>
+    <symbol id="user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></g></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></g></symbol>
+    <symbol id="eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs></svg>
+  <main class="page">
+    <section class="story" aria-label="Meet Klaidorbot">
+      <a class="brand" href="./" aria-label="Klaidorbot home"><span class="brand-mark"><svg aria-hidden="true"><use href="#bot"/></svg></span>Klaidorbot<span class="brand-dot">.</span></a>
+      <div class="story-content">
+        <div class="eyebrow"><span></span> A LITTLE HELP. A LOT OF POSSIBILITIES.</div>
+        <h1>Great questions.<br><em>Instant answers.</em></h1>
+        <p class="intro">Turn your FAQs into helpful conversations. Build a chatbot that knows your business, and give every visitor a warm welcome.</p>
+        <div class="chat" aria-label="Interactive FAQ chatbot example">
+          <div class="chat-head"><div class="bot-avatar"><svg aria-hidden="true"><use href="#bot"/></svg></div><div><div class="chat-title">Your helpful assistant</div><div class="online">Always here to help</div></div><span class="chat-live">LIVE DEMO</span></div>
+          <div class="chat-body" aria-live="polite" aria-atomic="true"><div class="bubble question" id="demo-question">Can I use my existing FAQs? 👋</div><div class="bubble answer"><span id="demo-answer">Absolutely! Add your FAQs and I’ll turn them into friendly, instant answers for your visitors. Easy as that.</span><div class="answer-source"><svg width="11" height="11" aria-hidden="true"><use href="#check"/></svg> Answered from your knowledge base</div></div></div>
+          <div class="chat-options"><button type="button" data-faq="setup">How do I get started?</button><button type="button" data-faq="availability">Are you available 24/7?</button></div>
+          <div class="chat-footer">A little conversation, powered by <span class="sparkle">✧</span> Klaidorbot</div>
+        </div>
+        <div class="benefits"><span><svg aria-hidden="true"><use href="#check"/></svg> Your FAQs, connected</span><span><svg aria-hidden="true"><use href="#check"/></svg> Support, around the clock</span></div>
+      </div>
+      <div class="story-bottom"><span>Thoughtful answers. Happier customers.</span><span>Made for conversations</span></div>
+    </section>
+    <section class="login-side" aria-labelledby="login-title">
+      <div class="top-link"><a class="brand mobile-brand" href="./"><span class="brand-mark"><svg aria-hidden="true"><use href="#bot"/></svg></span>Klaidorbot.</a><span>Have a question?<a href="#help" data-dialog="help">Get help ↗</a></span></div>
+      <div class="form-wrap">
+        <div class="welcome-icon"><svg aria-hidden="true"><use href="#bot"/></svg></div>
+        <header>
+          <p class="login-brand">Klaidorbot</p>
+          <h2 id="login-title">Login</h2>
+          <p class="subtitle">Welcome back. Sign in with your username and password<br>to manage your chatbots and FAQs.</p>
+        </header>
+        <form id="login-form" method="post">
+          <div class="field"><label for="username">Username:</label><div class="input-wrap"><svg aria-hidden="true"><use href="#user"/></svg><input type="text" id="username" name="username" placeholder="Enter your username" maxlength="32" autocomplete="username" autocapitalize="none" spellcheck="false" required></div></div>
+          <div class="field"><label for="password">Password:</label><div class="input-wrap"><svg aria-hidden="true"><use href="#lock"/></svg><input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" maxlength="128" required><button class="show-password" type="button" aria-label="Show password" aria-pressed="false"><svg aria-hidden="true"><use href="#eye"/></svg></button></div></div>
+          <div class="form-options"><label class="remember"><input type="checkbox" id="remember-me" name="remember-me">Remember Me</label><a href="#forgot-password" id="forgot-password" class="text-button" data-dialog="reset">Forgot Password?</a></div>
+          <button class="submit" type="submit" disabled>Login<svg aria-hidden="true"><use href="#arrow"/></svg></button>
+          <div class="status" role="status" id="form-status"></div>
+        </form>
+        <div class="divider">NEW TO KLAIDORBOT?</div>
+        <div class="social-links" aria-label="Follow Klaidorbot"><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a><a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">Twitter</a><a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+        <p class="signup">Don’t have an account? <a href="#signup" class="text-button" data-dialog="signup">Sign up for free!</a></p>
+        <div class="trust"><svg aria-hidden="true"><use href="#lock"/></svg> A little peace of mind, built in.</div>
+      </div>
+      <footer class="login-bottom"><span>© <span id="year">2026</span> Klaidorbot</span><div class="legal"><a href="#terms" class="text-button" data-dialog="terms">Terms of Use</a><span aria-hidden="true">|</span><a href="#privacy" class="text-button" data-dialog="privacy">Privacy Policy</a></div></footer>
+    </section>
+  </main>
+  <dialog id="info-dialog" aria-labelledby="dialog-title"><h2 id="dialog-title"></h2><p id="dialog-copy"></p><form method="dialog"><button class="submit">Got it</button></form></dialog>
+  <dialog id="account-dialog" aria-labelledby="account-title">
+    <h2 id="account-title">Create your account</h2>
+    <p id="account-description"></p>
+    <form id="account-form" method="post">
+      <div class="field"><label for="account-username">Username</label><input id="account-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" pattern="[A-Za-z0-9_-]{3,32}" minlength="3" maxlength="32" required></div>
+      <div class="field" id="recovery-field" hidden><label for="recovery-code">Recovery code</label><input id="recovery-code" name="recoveryCode" type="text" autocomplete="off" spellcheck="false" maxlength="64"></div>
+      <div class="field"><label for="account-password">Password (12–128 characters)</label><input id="account-password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required></div>
+      <button class="submit" id="account-submit" type="submit">Create account</button>
+    </form>
+    <div id="recovery-result" hidden>
+      <p>Save this recovery code in a safe place. You’ll need it if you forget your password. It is shown only once.</p>
+      <div class="field"><label for="saved-recovery-code">Your recovery code</label><input id="saved-recovery-code" type="text" readonly autocomplete="off" spellcheck="false"></div>
+      <button class="submit" type="button" id="recovery-done">I saved my code</button>
+    </div>
+    <p class="status" id="account-status" role="status"></p>
+    <button class="text-button" type="button" id="account-close" style="margin-top:18px">Close</button>
+  </dialog>
+  <script type="module" src="/login.js"></script>
+</body>
+</html>
